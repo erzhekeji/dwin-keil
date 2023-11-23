@@ -50,9 +50,36 @@
             },
             {
                 "command": "project.download",
-                "key": "f8"
+                "key": "alt+f7"
             }
         ],
+        "icons": {
+            "dwin-keil-build": {
+              "description": "build icon",
+              "default": {
+                "fontPath": "./res/icons/iconfont.woff",
+                "fontCharacter": "\\e615"
+              }
+            },
+            "dwin-keil-rebuild": {
+              "description": "rebuild icon",
+              "default": {
+                "fontPath": "./res/icons/iconfont.woff",
+                "fontCharacter": "\\e616"
+              }
+            },
+            "dwin-keil-download": {
+              "description": "download icon",
+              "default": {
+                "fontPath": "./res/icons/iconfont.woff",
+                "fontCharacter": "\\e618"
+              }
+            },
+            "dwin-keil-downloadpath": {
+              "description": "Download Path Setting",
+              "default": "folder-opened"
+            }
+        },
         "menus": {
             "view/title": [
                 {
@@ -130,25 +157,29 @@
                 "command": "project.build",
                 "title": "Build",
                 "icon": {
-                    "light": "./res/icons/BuildSelection_16x.svg",
-                    "dark": "./res/icons/BuildSelection_16x.svg"
+                    "light": "./res/icons/BuildSelection1_16x.svg",
+                    "dark": "./res/icons/BuildSelection1_16x.svg"
                 }
             },
             {
                 "command": "project.rebuild",
                 "title": "Rebuild",
                 "icon": {
-                    "light": "./res/icons/BuildSolution_16x.svg",
-                    "dark": "./res/icons/BuildSolution_16x.svg"
+                    "light": "./res/icons/BuildSolution1_16x.svg",
+                    "dark": "./res/icons/BuildSolution1_16x.svg"
                 }
             },
             {
                 "command": "project.download",
-                "title": "Download To Device",
+                "title": "Download BIN To Target",
                 "icon": {
-                    "light": "./res/icons/TransferDownload_16x.svg",
-                    "dark": "./res/icons/TransferDownload_16x.svg"
+                    "light": "./res/icons/TransferDownload1_16x.svg",
+                    "dark": "./res/icons/TransferDownload1_16x.svg"
                 }
+            },
+            {
+                "command": "project.sdselect",
+                "title": "Select SD Card Path"
             },
             {
                 "command": "item.copyValue",

@@ -194,6 +194,12 @@ export class File {
         }
     }
 
+    CreateFile():void{
+        if(!this.IsExist()){
+            fs.writeFileSync(this.path, "");
+        }
+    }
+
     GetList(fileFilter?: RegExp[], dirFilter?: RegExp[]): File[] {
         let list: File[] = [];
         fs.readdirSync(this.path).forEach((str: string) => {

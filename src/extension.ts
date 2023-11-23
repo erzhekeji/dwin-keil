@@ -70,6 +70,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     subscriber.push(vscode.commands.registerCommand('project.download', (item: IView) => prjExplorer.getTarget(item)?.download()));
 
+    subscriber.push(vscode.commands.registerCommand('project.downloadpath', (item: IView) => prjExplorer.getTarget(item)?.downloadPath()));
+
     subscriber.push(vscode.commands.registerCommand('item.copyValue', (item: IView) => vscode.env.clipboard.writeText(item.tooltip || '')));
 
     subscriber.push(vscode.commands.registerCommand('project.switch', (item: IView) => prjExplorer.switchTargetByProject(item)));
@@ -77,6 +79,31 @@ export function activate(context: vscode.ExtensionContext) {
     subscriber.push(vscode.commands.registerCommand('project.active', (item: IView) => prjExplorer.activeProject(item)));
 
 	prjExplorer.loadWorkspace();
+
+
+    const sdselectStatusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+    sdselectStatusbar.tooltip = 'Download Path Setting';
+    sdselectStatusbar.command = 'project.downloadpath';
+    sdselectStatusbar.text = '$(dwin-keil-downloadpath) ';
+    sdselectStatusbar.show();
+
+    const buildStatusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+    buildStatusbar.tooltip = 'Build';
+    buildStatusbar.command = 'project.build';
+    buildStatusbar.text = '$(dwin-keil-build)';
+    buildStatusbar.show();
+  
+    const downloadStatusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+    downloadStatusbar.tooltip = 'Download BIN to Target';
+    downloadStatusbar.command = 'project.download';
+    downloadStatusbar.text = '$(dwin-keil-download) ';
+    downloadStatusbar.show();
+
+    const rebuildStatusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+    rebuildStatusbar.tooltip = 'Rebuild';
+    rebuildStatusbar.command = 'project.rebuild';
+    rebuildStatusbar.text = '$(dwin-keil-rebuild) ';
+    rebuildStatusbar.show();
 }
 
 // This method is called when your extension is deactivated
@@ -238,7 +265,9 @@ class KeilProject implements IView, KeilProjectInfo {
 
     vscodeDir: File;
     uvprjFile: File;
-    logger: Console;
+    dwinConfig: File;
+    dwinConfigData: string
+    //logger: Console;
 
     // uVison info
     uVsionFileInfo: uVisonInfo;
@@ -256,14 +285,17 @@ class KeilProject implements IView, KeilProjectInfo {
         this.targetList = [];
         this.vscodeDir = new File(_uvprjFile.dir + File.sep + '.vscode');
         this.vscodeDir.CreateDir();
-        const logPath = this.vscodeDir.path + File.sep + 'keil-assistant.log';
-        this.logger = new console.Console(fs.createWriteStream(logPath, { flags: 'a+' }));
+        //const logPath = this.vscodeDir.path + File.sep + 'dwin-keil.log';
+        //this.logger = new console.Console(fs.createWriteStream(logPath, { flags: 'a+' }));
+        this.dwinConfig = new File(_uvprjFile.dir + "\\DwinKeil.Config");
+        this.dwinConfig.CreateFile();
+        this.dwinConfigData = this.dwinConfig.Read();
         this.uvprjFile = _uvprjFile;
         this.watcher = new FileWatcher(this.uvprjFile);
         this.prjID = getMD5(_uvprjFile.path);
         this.label = _uvprjFile.noSuffixName;
         this.tooltip = _uvprjFile.path;
-        this.logger.log('[info] Log at : ' + Time.GetInstance().GetTimeStamp() + '\r\n');
+        //this.logger.log('[info] Log at : ' + Time.GetInstance().GetTimeStamp() + '\r\n');
         this.watcher.OnChanged = () => {
             if (this.prevUpdateTime === undefined ||
                 this.prevUpdateTime + 2000 < Date.now()) {
@@ -313,7 +345,7 @@ class KeilProject implements IView, KeilProjectInfo {
         }
 
         for (const target of this.targetList) {
-            await target.load();
+            await target.load(this.dwinConfig, this.dwinConfigData);
             target.on('dataChanged', () => this.notifyUpdateView());
         }
     }
@@ -400,6 +432,8 @@ abstract class Target implements IView {
         light: 'Class_16x',
         dark: 'Class_16x'
     };
+    dwinConfig: File;
+    dwinConfigData: string;
 
     //-------------
 
@@ -416,6 +450,8 @@ abstract class Target implements IView {
 
     private uv4LogFile: File;
     private uv4LogLockFileWatcher: FileWatcher;
+
+
 
     constructor(prjInfo: KeilProjectInfo, uvInfo: uVisonInfo, targetDOM: any) {
         this._event = new event.EventEmitter();
@@ -512,12 +548,14 @@ abstract class Target implements IView {
         proFile.Write(JSON.stringify(obj, undefined, 4));
     }
 
-    async load(): Promise<void> {
+    async load(config: File, configData: string): Promise<void> {
 
         // check target is valid
         const err = this.checkProject(this.targetDOM);
         if (err) { throw err; }
 
+        this.dwinConfig = config;
+        this.dwinConfigData = configData;
         const incListStr: string = this.getIncString(this.targetDOM);
         const defineListStr: string = this.getDefineString(this.targetDOM);
         const _groups: any = this.getGroups(this.targetDOM);
@@ -678,14 +716,33 @@ abstract class Target implements IView {
 
     build() {
         this.runTask('build', this.getBuildCommand());
+        vscode.window.showInformationMessage("\"" + this.project.uvprjFile.name.split('.')[0] + "\" Build Start!");
     }
 
     rebuild() {
         this.runTask('rebuild', this.getRebuildCommand());
+        vscode.window.showInformationMessage("\"" + this.project.uvprjFile.name.split('.')[0] + "\" Reset Build Start!");
     }
 
-    download() {
-        this.runTask('download', this.getDownloadCommand());
+    async download() {
+        const tarBinFile = new File(this.dwinConfigData);
+        const srcBinFile = new File(this.project.vscodeDir.dir + "\\T5L51.bin");
+        tarBinFile.CreateFile();
+        tarBinFile.CopyFile(srcBinFile);
+        vscode.window.showInformationMessage("\"T5L51.bin\" Dwonload Success!");
+    }
+
+    async downloadPath(){
+        const downloadFolder = await vscode.window.showOpenDialog({
+            canSelectFolders: true,
+            canSelectFiles: false,
+            canSelectMany: false,
+        });
+        if (!downloadFolder || !downloadFolder.length) {
+            return;
+        }
+        this.dwinConfigData = downloadFolder[0].fsPath;
+        this.dwinConfig.Write(this.dwinConfigData);
     }
 
     updateSourceRefs() {
