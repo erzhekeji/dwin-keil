@@ -1,5 +1,8 @@
+test.js
 out
-dist
+out.min
 node_modules
-.vscode-test/
+test
 *.vsix
+dist
+package-lock.json

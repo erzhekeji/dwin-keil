@@ -1,7 +1,7 @@
 {
     "name": "dwin-keil",
     "displayName": "Dwin Keil",
-    "description": "",
+    "description": "An assistant for Dwin And Keil uVision",
     "version": "1.0.0",
     "publisher": "erzhe-tech",
     "author": {
@@ -13,10 +13,12 @@
         "vscode": "^1.38.0"
     },
     "categories": [
+        "Programming Languages",
+        "Snippets",
         "Other"
     ],
     "activationEvents": [],
-    "icon": "./res/icons/icon.png",
+    "icon": "images/icon.png",
     "main": "./dist/extension.js",
     "repository": {
         "type": "git",
@@ -70,29 +72,29 @@
         ],
         "icons": {
             "dwin-keil-build": {
-              "description": "build icon",
-              "default": {
-                "fontPath": "./res/icons/iconfont.woff",
-                "fontCharacter": "\\e615"
-              }
+                "description": "build icon",
+                "default": {
+                    "fontPath": "./res/icons/iconfont.woff",
+                    "fontCharacter": "\\e615"
+                }
             },
             "dwin-keil-rebuild": {
-              "description": "rebuild icon",
-              "default": {
-                "fontPath": "./res/icons/iconfont.woff",
-                "fontCharacter": "\\e616"
-              }
+                "description": "rebuild icon",
+                "default": {
+                    "fontPath": "./res/icons/iconfont.woff",
+                    "fontCharacter": "\\e616"
+                }
             },
             "dwin-keil-download": {
-              "description": "download icon",
-              "default": {
-                "fontPath": "./res/icons/iconfont.woff",
-                "fontCharacter": "\\e618"
-              }
+                "description": "download icon",
+                "default": {
+                    "fontPath": "./res/icons/iconfont.woff",
+                    "fontCharacter": "\\e618"
+                }
             },
             "dwin-keil-downloadpath": {
-              "description": "Download Path Setting",
-              "default": "folder-opened"
+                "description": "Download Path Setting",
+                "default": "folder-opened"
             }
         },
         "menus": {
@@ -331,6 +333,7 @@
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
+        "coffeescript": "^2.7.0",
         "vscode-variables": "^0.1.3",
         "xml2js": "^0.6.2"
     }

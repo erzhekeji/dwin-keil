@@ -241,7 +241,7 @@ interface KeilProjectInfo {
 
     uvprjFile: File;
 
-    logger: Console;
+    //logger: Console;
 
     toAbsolutePath(rePath: string): string;
 }
@@ -285,7 +285,7 @@ class KeilProject implements IView, KeilProjectInfo {
         this.targetList = [];
         this.vscodeDir = new File(_uvprjFile.dir + File.sep + '.vscode');
         this.vscodeDir.CreateDir();
-        //const logPath = this.vscodeDir.path + File.sep + 'dwin-keil.log';
+        const logPath = this.vscodeDir.path + File.sep + 'dwin-keil.log';
         //this.logger = new console.Console(fs.createWriteStream(logPath, { flags: 'a+' }));
         this.dwinConfig = new File(_uvprjFile.dir + "\\DwinKeil.Config");
         this.dwinConfig.CreateFile();
@@ -319,7 +319,7 @@ class KeilProject implements IView, KeilProjectInfo {
             this.notifyUpdateView();
         } catch (err) {
             if (err.code && err.code === 'EBUSY') {
-                this.logger.log(`[Warn] uVision project file '${this.uvprjFile.name}' is locked !, delay 500 ms and retry !`);
+                //this.logger.log(`[Warn] uVision project file '${this.uvprjFile.name}' is locked !, delay 500 ms and retry !`);
                 setTimeout(() => this.onReload(), 500);
             } else {
                 vscode.window.showErrorMessage(`reload project failed !, msg: ${err.message}`);
@@ -357,7 +357,7 @@ class KeilProject implements IView, KeilProjectInfo {
     close() {
         this.watcher.Close();
         this.targetList.forEach((target) => target.close());
-        this.logger.log('[info] project closed: ' + this.label);
+        //this.logger.log('[info] project closed: ' + this.label);
     }
 
     toAbsolutePath(rePath: string): string {
@@ -468,6 +468,8 @@ abstract class Target implements IView {
         this.fGroups = [];
         this.uv4LogFile = new File(this.project.vscodeDir.path + File.sep + 'uv4.log');
         this.uv4LogLockFileWatcher = new FileWatcher(new File(this.uv4LogFile.path + '.lock'));
+        this.dwinConfig = new File("");
+        this.dwinConfigData = "";
 
         if (!this.uv4LogLockFileWatcher.file.IsFile()) { // create file if not existed
             this.uv4LogLockFileWatcher.file.Write('');
@@ -523,7 +525,7 @@ abstract class Target implements IView {
             try {
                 obj = JSON.parse(proFile.Read());
             } catch (error) {
-                this.project.logger.log(error);
+                //this.project.logger.log(error);
                 obj = this.getDefCppProperties();
             }
         } else {
@@ -1249,8 +1251,7 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
             const workspace = new File(wsFilePath);
             if (workspace.IsDir()) {
                 const excludeList = ResourceManager.getInstance().getProjectExcludeList();
-                const uvList = workspace.GetList([/\.uvproj[x]?$/i], File.EMPTY_FILTER).concat(ResourceManager.getInstance().getProjectFileLocationList())
-                    .filter((file) => { return !excludeList.includes(file.name); });
+                const uvList = workspace.GetList([/\.uvproj[x]?$/i], File.EMPTY_FILTER);
                 for (const uvFile of uvList) {
                     try {
                         await this.openProject(uvFile.dir + "\\" + uvFile.name);

@@ -279,7 +279,7 @@ export class File {
     //-------------------------------------------------
 
     Read(encoding?: string): string {
-        return fs.readFileSync(this.path, encoding || 'utf8');
+        return fs.readFileSync(this.path, 'utf8');
     }
 
     Write(str: string, options?: fs.WriteFileOptions) {
