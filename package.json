@@ -3,6 +3,12 @@
     "displayName": "Dwin Keil",
     "description": "",
     "version": "1.0.0",
+    "publisher": "erzhe-tech",
+    "author": {
+        "name": "erzhe-tech",
+        "email": "erzhekeji@qq.com"
+    },
+    "homepage": "https://github.com/erzhekeji/dwin-keil",
     "engines": {
         "vscode": "^1.38.0"
     },
@@ -10,7 +16,16 @@
         "Other"
     ],
     "activationEvents": [],
+    "icon": "./res/icons/icon.png",
     "main": "./dist/extension.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/erzhekeji/dwin-keil"
+    },
+    "bugs": {
+        "url": "https://github.com/erzhekeji/dwin-keil/issues",
+        "email": "erzhekeji@qq.com"
+    },
     "contributes": {
         "configuration": [
             {
@@ -302,7 +317,7 @@
     "devDependencies": {
         "@types/mocha": "^10.0.3",
         "@types/node": "18.x",
-        "@types/vscode": "^1.84.0",
+        "@types/vscode": "^1.38.0",
         "@types/xml2js": "^0.4.14",
         "@typescript-eslint/eslint-plugin": "^6.9.0",
         "@typescript-eslint/parser": "^6.9.0",
