@@ -194,7 +194,7 @@
             },
             {
                 "command": "project.sdselect",
-                "title": "Select SD Card Path"
+                "title": "Select T5L51.bin Path"
             },
             {
                 "command": "item.copyValue",

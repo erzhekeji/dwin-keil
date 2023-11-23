@@ -1,71 +1,45 @@
-# dwin-keil README
+# Dwin Keil
 
-This is the README for your extension "dwin-keil". After writing up a brief description, we recommend including the following sections.
+<p align="center">
+    <img src="./res/icons/icon.png"> </img>
+</p>
 
-## Features
+## 简述
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+vscode 上的 Keil 辅助工具，与 c/c++ 插件配合使用.
 
-For example if there is an image subfolder under your extension project workspace:
+能够为 Keil 项目提供 语法高亮、代码片段 的功能，并支持对 keil 项目进行 编译、下载。
 
-\!\[feature X\]\(images/feature-x.png\)
+**仅支持 Keil uVison 5 及以上版本**  
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+**仅支持 Windows 平台**
 
-## Requirements
+***
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## 功能特性
 
-## Extension Settings
+- 自动识别加载 Keil C51/ARM 项目
+- 自动监视 keil 项目文件的变化，及时更新项目视图
+- 通过调用 Keil 命令行接口实现 编译，重新编译，烧录 keil 项目
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+***
 
-For example:
+## 用法
 
-This extension contributes the following settings:
+### 准备工作
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+1. 安装 C/C++ 插件
+>
+2. 进入 Keil-V 插件设置，设置好 keil 可执行文件 UV4.exe 的绝对路径
 
-## Known Issues
+***
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+### 开始使用
 
-## Release Notes
+1. 在 Keil 上创建好项目，添加好文件，头文件路径等，并测试编译通过
+> 
+2. 使用 `vscode` 打开项目路径，插件会自动加载 keil 项目；
 
-Users appreciate release notes as you update your extension.
+### 常用操作
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- **编译，烧录**：提供了 4 个状态栏按钮，分别代表 编译，重新编译，下载，切换构建目标
