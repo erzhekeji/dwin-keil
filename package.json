@@ -12,10 +12,248 @@
     "activationEvents": [],
     "main": "./dist/extension.js",
     "contributes": {
+        "configuration": [
+            {
+                "title": "Dwin Keil",
+                "properties": {
+                    "DwinKeil.C51.Uv4Path": {
+                        "type": "string",
+                        "scope": "machine",
+                        "markdownDescription": "C51 UV4.exe path",
+                        "default": "null"
+                    },
+                    "DwinKeil.Project.ExcludeList": {
+                        "type": "array",
+                        "scope": "resource",
+                        "markdownDescription": "uVision project file name exclude list",
+                        "default": [
+                            "template.uvproj"
+                        ]
+                    },
+                    "DwinKeil.Project.FileLocationList": {
+                        "type": "array",
+                        "scope": "resource",
+                        "markdownDescription": "uVision project file locations",
+                        "default": []
+                    }
+                }
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "project.build",
+                "key": "f7"
+            },
+            {
+                "command": "project.rebuild",
+                "key": "ctrl+alt+f7"
+            },
+            {
+                "command": "project.download",
+                "key": "f8"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "explorer.open",
+                    "group": "navigation",
+                    "when": "view == project"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "project.close",
+                    "when": "viewItem == Project"
+                },
+                {
+                    "command": "project.active",
+                    "when": "viewItem == Project"
+                },
+                {
+                    "command": "project.switch",
+                    "group": "inline",
+                    "when": "viewItem == Project"
+                },
+                {
+                    "command": "project.build",
+                    "group": "inline",
+                    "when": "viewItem == Target"
+                },
+                {
+                    "command": "project.rebuild",
+                    "group": "inline",
+                    "when": "viewItem == Target"
+                },
+                {
+                    "command": "project.download",
+                    "group": "inline",
+                    "when": "viewItem == Target"
+                },
+                {
+                    "command": "item.copyValue",
+                    "group": "inline",
+                    "when": "viewItem == Source"
+                }
+            ]
+        },
         "commands": [
             {
-                "command": "dwin-keil.helloWorld",
-                "title": "Hello World"
+                "command": "explorer.open",
+                "title": "Open keil uVision project",
+                "icon": {
+                    "light": "./res/icons/ClassAdded_16x.svg",
+                    "dark": "./res/icons/ClassAdded_16x.svg"
+                }
+            },
+            {
+                "command": "project.switch",
+                "title": "Switch Target",
+                "icon": {
+                    "light": "./res/icons/SwitchSourceOrTarget_16x.svg",
+                    "dark": "./res/icons/SwitchSourceOrTarget_16x.svg"
+                }
+            },
+            {
+                "command": "project.active",
+                "title": "Active Project"
+            },
+            {
+                "command": "project.close",
+                "title": "Close Project",
+                "icon": {
+                    "light": "./res/icons/StatusOffline_16x.svg",
+                    "dark": "./res/icons/StatusOffline_16x.svg"
+                }
+            },
+            {
+                "command": "project.build",
+                "title": "Build",
+                "icon": {
+                    "light": "./res/icons/BuildSelection_16x.svg",
+                    "dark": "./res/icons/BuildSelection_16x.svg"
+                }
+            },
+            {
+                "command": "project.rebuild",
+                "title": "Rebuild",
+                "icon": {
+                    "light": "./res/icons/BuildSolution_16x.svg",
+                    "dark": "./res/icons/BuildSolution_16x.svg"
+                }
+            },
+            {
+                "command": "project.download",
+                "title": "Download To Device",
+                "icon": {
+                    "light": "./res/icons/TransferDownload_16x.svg",
+                    "dark": "./res/icons/TransferDownload_16x.svg"
+                }
+            },
+            {
+                "command": "item.copyValue",
+                "title": "Copy Item Value",
+                "icon": {
+                    "light": "./res/icons/CopyToClipboard_16x.svg",
+                    "dark": "./res/icons/CopyToClipboard_16x.svg"
+                }
+            }
+        ],
+        "snippets": [
+            {
+                "language": "a51",
+                "path": "./syntaxes/a51.snippets.json"
+            }
+        ],
+        "languages": [
+            {
+                "id": "a51",
+                "aliases": [
+                    "A51",
+                    "8051 Assembly"
+                ],
+                "extensions": [
+                    ".a51",
+                    ".A51"
+                ],
+                "filenamePatterns": [
+                    "**/*.a51",
+                    "**/*.A51"
+                ],
+                "configuration": "./syntaxes/a51.language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "a51",
+                "scopeName": "source.asm.a51",
+                "path": "./syntaxes/a51.tmLanguage.json"
+            }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "projectView",
+                    "title": "Dwin Keil",
+                    "icon": "./res/icons/DKlogo.svg"
+                }
+            ]
+        },
+        "views": {
+            "projectView": [
+                {
+                    "id": "project",
+                    "name": "Keil uVision Project"
+                }
+            ]
+        },
+        "taskDefinitions": [
+            {
+                "type": "keil-task"
+            }
+        ],
+        "problemMatchers": [
+            {
+                "name": "c51",
+                "fileLocation": "autoDetect",
+                "pattern": [
+                    {
+                        "regexp": "^([^\\(]+)\\(([\\d]+)\\):\\s+(error|warning)\\s+([A-Z0-9]+):\\s+(.+)$",
+                        "file": 1,
+                        "location": 2,
+                        "severity": 3,
+                        "code": 4,
+                        "message": 5
+                    }
+                ]
+            },
+            {
+                "name": "armcc",
+                "fileLocation": "autoDetect",
+                "pattern": [
+                    {
+                        "regexp": "^([^\\(]+)\\(([\\d]+)\\):\\s+(error|warning):\\s+#([\\d\\w-]+):\\s+(.+)$",
+                        "file": 1,
+                        "location": 2,
+                        "severity": 3,
+                        "code": 4,
+                        "message": 5
+                    }
+                ]
+            },
+            {
+                "name": "gcc",
+                "fileLocation": "autoDetect",
+                "pattern": [
+                    {
+                        "regexp": "^(.+):(\\d+):(\\d+):\\s+(\\w+):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                ]
             }
         ]
     },
@@ -31,18 +269,23 @@
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-        "@types/vscode": "^1.84.0",
         "@types/mocha": "^10.0.3",
         "@types/node": "18.x",
+        "@types/vscode": "^1.84.0",
+        "@types/xml2js": "^0.4.14",
         "@typescript-eslint/eslint-plugin": "^6.9.0",
         "@typescript-eslint/parser": "^6.9.0",
+        "@vscode/test-electron": "^2.3.6",
         "eslint": "^8.52.0",
         "glob": "^10.3.10",
         "mocha": "^10.2.0",
-        "typescript": "^5.2.2",
         "ts-loader": "^9.5.0",
+        "typescript": "^5.2.2",
         "webpack": "^5.89.0",
-        "webpack-cli": "^5.1.4",
-        "@vscode/test-electron": "^2.3.6"
+        "webpack-cli": "^5.1.4"
+    },
+    "dependencies": {
+        "vscode-variables": "^0.1.3",
+        "xml2js": "^0.6.2"
     }
 }
