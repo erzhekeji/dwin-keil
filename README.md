@@ -6,11 +6,11 @@
 
 ## 简述
 
-vscode 上的 Keil 辅助工具，与 c/c++ 插件配合使用.
+vscode 上的 Keil 辅助工具，与 c/c++ 插件配合使用
 
-能够为 Keil 项目提供 语法高亮、代码片段 的功能，并支持对 keil 项目进行 编译、下载。
+能够为 Keil 项目提供 语法高亮、代码片段 的功能，并支持对 keil 项目进行 编译、下载
 
-**仅支持 Keil uVison 5 及以上版本**  
+**仅支持 Keil uVison 4 版本**  
 
 **仅支持 Windows 平台**
 
@@ -30,7 +30,7 @@ vscode 上的 Keil 辅助工具，与 c/c++ 插件配合使用.
 
 1. 安装 C/C++ 插件
 >
-2. 进入 Keil-V 插件设置，设置好 keil 可执行文件 UV4.exe 的绝对路径
+2. 进入 Dwin Keil 插件设置，设置好 keil 可执行文件 UV4.exe 的绝对路径
 
 ***
 
